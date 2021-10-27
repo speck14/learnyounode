@@ -1,15 +1,14 @@
+ 'use strict'
 const net = require('net')
+let port = process.argv[2]
 
-let date_obj = new Date();
+function now () {
+  const date_obj = new Date()
+  return `${date_obj.getFullYear()}-${("0" + (date_obj.getMonth() + 1)).slice(-2)}-${("0" + date_obj.getDate()).slice(-2)} ${date_obj.getHours()}:${date_obj.getMinutes()}`
+}
 
-let day = ("0" + date_obj.getDate()).slice(-2)
-let month = ("0" + (date_obj.getMonth() + 1)).slice(-2)
-let year = date_obj.getFullYear()
-let hours = date_obj.getHours();
-let minutes = date_obj.getMinutes();
-
-const server = net.createServer(function listener(socket) {
-  socket.write(`${year}-${month}-${day} ${hours}:${minutes}`)
-  socket.end('\n')
+const server = net.createServer(function (socket) {
+  socket.end(now() + '\n')
 })
-server.listen(process.argv[2])
+
+server.listen(port) 
